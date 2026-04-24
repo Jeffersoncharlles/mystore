@@ -13,6 +13,8 @@
 # testing
 /coverage
 
+/src/shared/utils/product-image.ts
+
 # next.js
 /.next/
 /out/
