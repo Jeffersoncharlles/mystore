@@ -132,7 +132,7 @@ async function seed() {
 
     // 3. Criar ordens com diferentes status (usando alguns dos 100 produtos)
     const ordersToCreate = Array.from({ length: 5 }, (_, i) => ({
-      status: ['pending', 'paid', 'failed', 'paid', 'pending'][i] as const,
+      status: ['pending', 'paid', 'failed'][i] as const,
       totalInCents:
         createdProducts[i].priceInCents + createdProducts[i + 1].priceInCents,
     }))

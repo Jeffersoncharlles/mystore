@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
 import { ClientProviders } from '@/providers/client-providers'
+import { ThemeProvider } from '@/providers/theme-provider'
 
 export default function RootLayout({
   children,
@@ -47,14 +48,22 @@ export default function RootLayout({
         notoSans.variable,
         playfairDisplayHeading.variable,
       )}
+      suppressHydrationWarning
     >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <ClientProviders>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SiteHeader />
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+          </ThemeProvider>
         </ClientProviders>
       </body>
     </html>

@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { ProductCard } from '@/components/product-card'
+import { ProductCardSkeleton } from '@/components/skeletons/product-card-skeleton'
 import {
   Pagination,
   PaginationContent,
@@ -15,22 +17,27 @@ import type { ProductResponseDTO } from '@/core/domain/dtos/product-dto'
 import { getAllProducts } from '@/http/http-services'
 
 export const ProductList = () => {
-  const [page, setPage] = useState(1)
-  const [product, setProduct] = useState<ProductResponseDTO['data'] | null>(
-    null,
-  )
-  const [meta, setMeta] = useState<ProductResponseDTO['meta'] | null>(null)
+  const searchParams = useSearchParams()
+  const pathName = usePathname()
+  const { replace } = useRouter()
 
-  useEffect(() => {
-    getAllProducts({ page, limit: 10 }).then((response) => {
-      setProduct(response.data)
-      setMeta(response.meta)
-    })
-  }, [page])
+  const currentPageFromUrl = Number(searchParams.get('page')) || 1
+
+  const { data: product, isLoading } = useQuery<ProductResponseDTO>({
+    queryKey: ['products', currentPageFromUrl],
+    queryFn: async () =>
+      getAllProducts({ page: currentPageFromUrl, limit: 12 }),
+  })
+
+  const meta = product?.meta
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= (meta?.totalPages || 1)) {
-      setPage(newPage)
+      const params = new URLSearchParams(searchParams)
+      params.set('page', newPage.toString())
+
+      replace(`${pathName}?${params.toString()}`, { scroll: false })
+
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
@@ -79,7 +86,7 @@ export const ProductList = () => {
         <PaginationItem key={`page-${pageNum}`}>
           <PaginationLink
             onClick={() => handlePageChange(pageNum)}
-            isActive={pageNum === currentPage}
+            isActive={pageNum === currentPageFromUrl}
             className="cursor-pointer"
           >
             {String(pageNum).padStart(2, '0')}
@@ -89,10 +96,14 @@ export const ProductList = () => {
     )
   }
 
+  if (isLoading && !product) {
+    return <ProductCardSkeleton />
+  }
+
   return (
     <>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-24">
-        {product?.map((product) => (
+        {product?.data.map((product) => (
           <ProductCard key={product.id} props={product} />
         ))}
       </section>
