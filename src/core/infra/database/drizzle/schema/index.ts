@@ -63,6 +63,7 @@ export const products = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
     name: text('name').notNull(),
     description: text('description').notNull(),
+    imageUrl: text('image_url'),
     priceInCents: integer('price_in_cents').notNull().default(0),
     stock: integer('stock').notNull().default(0),
     isActive: boolean('is_active').notNull().default(true),

@@ -19,6 +19,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.100.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -27,6 +28,7 @@
     "lefthook": "^2.1.6",
     "lucide-react": "^1.11.0",
     "next": "15.5.15",
+    "next-themes": "^0.4.6",
     "pg": "^8.20.0",
     "radix-ui": "^1.4.3",
     "react": "19.1.0",

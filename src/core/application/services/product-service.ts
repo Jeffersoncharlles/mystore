@@ -9,6 +9,7 @@ export class ProductService {
     const productEntity: Omit<Product, 'id' | 'createdAt' | 'updatedAt'> = {
       name: data.name,
       description: data.description,
+      imageUrl: data.imageUrl,
       priceInCents: Math.round(data.priceInCents * 100),
       stock: data.stock,
       isActive: true,
@@ -18,7 +19,7 @@ export class ProductService {
     return savedProduct
   }
 
-  async getAllProducts() {
-    return await this.productRepository.findAll()
+  async getAllProducts({ perPage, page }: { perPage?: number; page?: number }) {
+    return await this.productRepository.findAll(perPage, page)
   }
 }
