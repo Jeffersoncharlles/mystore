@@ -8,6 +8,13 @@
       "when": 1777035384224,
       "tag": "0000_magenta_redwing",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777135039378,
+      "tag": "0001_yellow_meteorite",
+      "breakpoints": true
     }
   ]
 }

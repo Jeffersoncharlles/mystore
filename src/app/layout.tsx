@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
+import { ClientProviders } from '@/providers/client-providers'
 
 export default function RootLayout({
   children,
@@ -50,9 +51,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <ClientProviders>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </ClientProviders>
       </body>
     </html>
   )

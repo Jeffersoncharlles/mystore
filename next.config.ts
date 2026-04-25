@@ -5,9 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'www.figma.com',
-        port: '',
-        pathname: '/api/mcp/asset/**',
+        hostname: 'picsum.photos',
+        pathname: '/400/600',
       },
     ],
   },
