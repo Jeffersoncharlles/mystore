@@ -2,6 +2,8 @@
 
 Uma loja de e-commerce moderna construída com Next.js, React e arquitetura limpa, focando em performance, manutenibilidade e escalabilidade.
 
+Preview: https://mystore-kohl-two.vercel.app/
+
 ## 📋 Sumário
 
 - [Stack Tecnológico](#-stack-tecnológico)
