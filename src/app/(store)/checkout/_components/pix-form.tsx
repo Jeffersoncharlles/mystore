@@ -1,6 +1,7 @@
 'use client'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { finishCheckoutAction } from '@/app/actions/checkout.action'
 
 export const PixForm = () => {
@@ -14,9 +15,9 @@ export const PixForm = () => {
       cvv: '000',
     }
 
-    await finishCheckoutAction(mockData as any)
+    const result = await finishCheckoutAction(mockData as any)
     queryClient.invalidateQueries({ queryKey: ['cart'] })
-    alert('Pagamento via PIX nao foi finalizado! tente novamente')
+    toast.error(result.msg || 'Failed to process PIX payment')
   }
 
   return (

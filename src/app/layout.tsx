@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 
 import { SiteFooter } from '@/components/layout/site-footer'
 import { SiteHeader } from '@/components/layout/site-header'
+import { Toaster } from '@/components/ui/sonner'
 import { ClientProviders } from '@/providers/client-providers'
 import { ThemeProvider } from '@/providers/theme-provider'
 
@@ -68,6 +69,7 @@ export default function RootLayout({
               {cart}
             </main>
             <SiteFooter />
+            <Toaster richColors />
           </ThemeProvider>
         </ClientProviders>
       </body>

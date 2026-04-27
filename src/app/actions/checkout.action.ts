@@ -15,6 +15,12 @@ type CreditCardFormData = z.infer<typeof creditCardSchema>
 
 export const finishCheckoutAction = async (data: CreditCardFormData) => {
   const validated = creditCardSchema.safeParse(data)
+  if (!validated.success && data.cardholderName === 'PIX PAYMENT') {
+    return {
+      success: false,
+      msg: 'Pagamento via PIX nao foi finalizado! tente novamente',
+    }
+  }
 
   if (!validated.success) {
     const { fieldErrors } = z.flattenError(validated.error)
@@ -25,12 +31,6 @@ export const finishCheckoutAction = async (data: CreditCardFormData) => {
     }
   }
 
-  if (validated.data.cardholderName === 'PIX PAYMENT') {
-    return {
-      success: false,
-      msg: 'Pagamento via PIX nao foi finalizado! tente novamente',
-    }
-  }
   const userId = mockUserId
 
   try {
