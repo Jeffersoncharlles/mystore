@@ -37,8 +37,10 @@ import { ThemeProvider } from '@/providers/theme-provider'
 
 export default function RootLayout({
   children,
+  cart,
 }: Readonly<{
   children: React.ReactNode
+  cart: React.ReactNode
 }>) {
   return (
     <html
@@ -61,7 +63,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <SiteHeader />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              {children}
+              {cart}
+            </main>
             <SiteFooter />
           </ThemeProvider>
         </ClientProviders>

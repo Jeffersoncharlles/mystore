@@ -3,9 +3,8 @@ import { ProductList } from './_components/product-list'
 export default async function Home() {
   return (
     <div className="container mx-auto px-4 md:px-12 py-16 space-y-24">
-      {/* Editorial Header */}
       <section className="space-y-6">
-        <h1 className="font-heading text-6xl md:text-8xl font-black tracking-tight leading-[0.9] uppercase">
+        <h1 className="font-heading text-6xl md:text-6xl font-black leading-tight uppercase">
           Novidades
           <br />
           Coleção 2026
@@ -22,8 +21,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Product Grid */}
 
       <ProductList />
     </div>

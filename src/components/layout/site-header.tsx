@@ -1,5 +1,6 @@
 import { ShoppingBag, User } from 'lucide-react'
 import Link from 'next/link'
+import { ThemeToggle } from './theme-toogle'
 
 export function SiteHeader() {
   return (
@@ -15,44 +16,29 @@ export function SiteHeader() {
 
         <nav className="hidden md:flex items-center gap-8">
           <Link
-            href="/shop"
+            href="/"
             className="text-sm font-bold tracking-tight uppercase line-through decoration-2"
           >
             SHOP
           </Link>
-          <Link
-            href="/collections"
-            className="text-sm font-bold tracking-tight uppercase text-muted-foreground hover:text-foreground transition-colors"
-          >
-            COLLECTIONS
-          </Link>
-          <Link
-            href="/editorial"
-            className="text-sm font-bold tracking-tight uppercase text-muted-foreground hover:text-foreground transition-colors"
-          >
-            EDITORIAL
-          </Link>
-          <Link
-            href="/admin"
-            className="text-sm font-bold tracking-tight uppercase text-muted-foreground hover:text-foreground transition-colors"
-          >
-            ADMIN
-          </Link>
         </nav>
 
         <div className="flex items-center gap-6">
+          <ThemeToggle />
+
           <button
             type="button"
             className="text-foreground hover:opacity-70 transition-opacity"
           >
             <User className="h-5 w-5" />
           </button>
-          <button
-            type="button"
+
+          <Link
+            href="/cart"
             className="text-foreground hover:opacity-70 transition-opacity"
           >
             <ShoppingBag className="h-5 w-5" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>

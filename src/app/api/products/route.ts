@@ -4,7 +4,7 @@ import { makeProductService } from '@/core/infra/factories/product-factory'
 
 const schemaRequestParams = z.object({
   page: z.coerce.number().optional().default(1),
-  perPage: z.coerce.number().optional().default(10),
+  limit: z.coerce.number().optional().default(10),
 })
 
 export async function GET(request: NextRequest) {
@@ -25,10 +25,13 @@ export async function GET(request: NextRequest) {
         },
       )
     }
-    const { page, perPage } = result.data
+    const { page, limit } = result.data
 
     const productService = makeProductService()
-    const products = await productService.getAllProducts({ perPage, page })
+    const products = await productService.getAllProducts({
+      perPage: limit,
+      page,
+    })
 
     return NextResponse.json(products)
   } catch (_error) {

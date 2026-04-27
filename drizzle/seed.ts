@@ -9,6 +9,56 @@ import {
   users,
 } from '@/core/infra/database/drizzle/schema'
 
+// Tipo para status de ordens
+type OrderStatus = 'pending' | 'paid' | 'failed'
+
+// Função para buscar imagens de roupas do Unsplash
+async function fetchUnsplashClothingImages(): Promise<string[]> {
+  const accessKey = process.env.UNSPLASH_ACCESS_KEY
+  if (!accessKey) {
+    console.warn('⚠️  UNSPLASH_ACCESS_KEY não definida. Usando fallback.')
+    return generateFallbackImages()
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/search/photos?query=clothing+fashion+shirt&per_page=100&order_by=popular`,
+      {
+        headers: {
+          Authorization: `Client-ID ${accessKey}`,
+        },
+      },
+    )
+
+    if (!response.ok) {
+      throw new Error(`Unsplash API error: ${response.status}`)
+    }
+
+    const data = (await response.json()) as {
+      results: Array<{ urls: { regular: string } }>
+    }
+    const images = data.results.map((photo) => photo.urls.regular)
+
+    // Garantir que temos pelo menos 100 imagens (se temos menos, repetir)
+    while (images.length < 100) {
+      images.push(...images.slice(0, 100 - images.length))
+    }
+
+    return images.slice(0, 100)
+  } catch (error) {
+    console.warn('⚠️  Erro ao buscar imagens do Unsplash:', error)
+    return generateFallbackImages()
+  }
+}
+
+// Gerar URLs de fallback em caso de falha
+function generateFallbackImages(): string[] {
+  return Array.from(
+    { length: 100 },
+    (_, i) => `https://picsum.photos/400/600?random=${i + 1}`,
+  )
+}
+
 // Estilos de camisas para geração variada
 const shirtStyles = [
   'Classic Cotton',
@@ -88,6 +138,11 @@ async function seed() {
 
     console.log('🧹 Dados anteriores deletados')
 
+    // Buscar imagens de roupas do Unsplash
+    console.log('📸 Buscando imagens de roupas...')
+    const clothingImages = await fetchUnsplashClothingImages()
+    console.log(`✅ ${clothingImages.length} imagens carregadas`)
+
     // 1. Criar usuário com email específico
     const salt = randomBytes(16)
     const passwordHash = pbkdf2Sync('12345', salt, 100000, 64, 'sha512')
@@ -106,7 +161,7 @@ async function seed() {
 
     console.log(`✅ Usuário criado: ${testUserId}`)
 
-    // 2. Gerar 100 camisas com Faker e imagens
+    // 2. Gerar 100 camisas com Faker e imagens do Unsplash
     const productsData = Array.from({ length: 100 }, (_, index) => {
       const style = faker.helpers.arrayElement(shirtStyles)
       const color = faker.helpers.arrayElement(shirtColors)
@@ -116,7 +171,7 @@ async function seed() {
       return {
         name: `${color} ${style} ${occasion} Shirt #${index + 1}`,
         description: `Beautiful ${color.toLowerCase()} ${style.toLowerCase()} shirt perfect for ${occasion.toLowerCase()} occasions. Made from premium ${material.toLowerCase()}. ${faker.lorem.sentence()}`,
-        imageUrl: `https://picsum.photos/400/600?random=${index + 1}`,
+        imageUrl: clothingImages[index],
         priceInCents: faker.number.int({ min: 2990, max: 12990 }),
         stock: faker.number.int({ min: 0, max: 50 }),
         isActive: true,
@@ -131,8 +186,9 @@ async function seed() {
     console.log(`✅ ${createdProducts.length} produtos criados`)
 
     // 3. Criar ordens com diferentes status (usando alguns dos 100 produtos)
+    const statusValues: OrderStatus[] = ['pending', 'paid', 'failed']
     const ordersToCreate = Array.from({ length: 5 }, (_, i) => ({
-      status: ['pending', 'paid', 'failed'][i] as const,
+      status: statusValues[i % statusValues.length],
       totalInCents:
         createdProducts[i].priceInCents + createdProducts[i + 1].priceInCents,
     }))
@@ -254,9 +310,9 @@ async function seed() {
     console.log(`   Itens de ordem: ${orderItemsToCreate.length}`)
     console.log(`   Itens de carrinho: ${cartItemsToCreate.length}`)
     console.log(
-      `\n💡 Todas as camisas têm imagens de https://picsum.photos (service externo)`,
+      `\n💡 Todas as camisas têm imagens do Unsplash (fotos reais de roupas)`,
     )
-    console.log(`   Fallback: /public/default-shirt.svg\n`)
+    console.log(`   Fallback: https://picsum.photos (se Unsplash falhar)\n`)
 
     process.exit(0)
   } catch (error) {
