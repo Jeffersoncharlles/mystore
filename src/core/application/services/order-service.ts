@@ -22,7 +22,7 @@ export class OrderService {
       })),
     })
 
-    await this.cartRepository.clearCart(userId)
+    // await this.cartRepository.clearCart(userId)
 
     return order
   }
