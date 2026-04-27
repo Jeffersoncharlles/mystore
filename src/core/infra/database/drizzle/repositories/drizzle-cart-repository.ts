@@ -1,4 +1,4 @@
-import { eq, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import type { CreateCartItemDTO } from '@/core/domain/dtos/cart-dto'
 import type { ICartRepository } from '@/core/domain/repositories/cart-repository.interface'
 import type { DrizzleDB } from '..'
@@ -64,33 +64,32 @@ export class DrizzleCartRepository implements ICartRepository {
     }
   }
 
-  async clearCart(userId: string): Promise<void> {
-    await this.db.delete(cartItems).where(eq(cartItems.userId, userId))
-  }
-
-  async update(
+  async updateQuantity(
     userId: string,
     productId: string,
     quantity: number,
   ): Promise<void> {
+    if (quantity === 0) {
+      await this.db
+        .delete(cartItems)
+        .where(
+          and(eq(cartItems.userId, userId), eq(cartItems.productId, productId)),
+        )
+      return
+    }
+
     await this.db
       .update(cartItems)
-      .set({ quantity, updatedAt: new Date() })
+      .set({
+        quantity,
+        updatedAt: new Date(),
+      })
       .where(
-        sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`,
+        and(eq(cartItems.userId, userId), eq(cartItems.productId, productId)),
       )
   }
 
-  async delete(userId: string, productId: string): Promise<void> {
-    await this.db
-      .delete(cartItems)
-      .where(
-        sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`,
-      )
-  }
-
-  async get(userId: string) {
-    const res = await this.findByUserId(userId)
-    return res?.items || []
+  async clearCart(userId: string): Promise<void> {
+    await this.db.delete(cartItems).where(eq(cartItems.userId, userId))
   }
 }

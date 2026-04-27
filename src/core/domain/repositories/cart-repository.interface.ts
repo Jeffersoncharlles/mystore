@@ -10,7 +10,10 @@ export interface ICartRepository {
     }[]
     totalInCents: number
   } | null>
+  updateQuantity(
+    userId: string,
+    productId: string,
+    quantity: number,
+  ): Promise<void>
   clearCart(userId: string): Promise<void>
-  update(userId: string, productId: string, quantity: number): Promise<void>
-  delete(userId: string, productId: string): Promise<void>
 }

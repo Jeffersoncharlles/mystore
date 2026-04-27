@@ -39,4 +39,24 @@ export class CartService {
       ...cart,
     }
   }
+
+  async updateCartItemQuantity(
+    userId: string,
+    productId: string,
+    quantity: number,
+  ) {
+    if (quantity > 0) {
+      const product = await this.productRepository.findById(productId)
+
+      if (!product) {
+        throw new ResourceNotFoundError()
+      }
+
+      if (product.stock < quantity) {
+        throw new Error('Estoque insuficiente.')
+      }
+    }
+
+    await this.cartRepository.updateQuantity(userId, productId, quantity)
+  }
 }

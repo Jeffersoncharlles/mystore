@@ -1,10 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  addToCart,
-  getCartItems,
-  removeFromCart,
-  updateCartItem,
-} from '@/http/http-services'
+import { addToCart, getCartItems, updateCartItem } from '@/http/http-services'
 
 export const useCart = () => {
   const queryClient = useQueryClient()
@@ -26,15 +21,6 @@ export const useCart = () => {
     },
   })
 
-  const removeItemMutation = useMutation({
-    mutationFn: async (itemId: string) => {
-      return removeFromCart(itemId)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] })
-    },
-  })
-
   const updateItemMutation = useMutation({
     mutationFn: async (item: { itemId: string; quantity: number }) => {
       return updateCartItem({ productId: item.itemId, quantity: item.quantity })
@@ -48,7 +34,6 @@ export const useCart = () => {
     cart,
     isLoading,
     addItem: addItemMutation.mutate,
-    removeItem: removeItemMutation.mutate,
     updateItem: updateItemMutation.mutate,
   }
 }

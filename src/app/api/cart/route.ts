@@ -11,7 +11,7 @@ export async function GET(_request: NextRequest) {
 
     return NextResponse.json({ cartItems })
   } catch (_error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
+    return new Response(JSON.stringify({ error: 'Failed to get cart items' }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
@@ -40,37 +40,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(cartService)
   } catch (_error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
+    return new Response(
+      JSON.stringify({ error: 'Failed to add item to cart' }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    return NextResponse.json({ message: 'Cart API is working!' })
-  } catch (_error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  try {
-    return NextResponse.json({ message: 'Cart API is working!' })
-  } catch (_error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch products' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    )
   }
 }

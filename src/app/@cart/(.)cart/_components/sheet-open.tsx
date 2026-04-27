@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Sheet } from '@/components/ui/sheet'
 
 export const SheetOpen = ({
@@ -9,12 +9,13 @@ export const SheetOpen = ({
   children: React.ReactNode
 }>) => {
   const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <Sheet
       defaultOpen
       onOpenChange={(open) => {
-        if (!open) {
+        if (!open && pathname.includes('/cart')) {
           router.back()
         }
       }}

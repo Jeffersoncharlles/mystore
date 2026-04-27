@@ -71,29 +71,15 @@ export const updateCartItem = async ({
   productId: string
   quantity: number
 }): Promise<void> => {
-  const response = await fetch(`/api/cart`, {
+  const response = await fetch(`/api/cart/${productId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ productId, quantity }),
+    body: JSON.stringify({ quantity }),
   })
 
   if (!response.ok) {
     throw new Error('Failed to update cart item')
-  }
-}
-
-export const removeFromCart = async (productId: string): Promise<void> => {
-  const response = await fetch(`/api/cart`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to remove item from cart')
   }
 }
