@@ -1,5 +1,5 @@
 import { CardList } from '@/components/cart-list'
-import { CreditCardForm } from './_components/credit-card-form'
+import { PaymentMethod } from './_components/Payment-method'
 
 export default function CheckoutPage() {
   return (
@@ -11,32 +11,7 @@ export default function CheckoutPage() {
             CHECKOUT
           </h1>
 
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <span className="text-[12px] font-semibold tracking-widest text-muted-foreground uppercase">
-                01 / PAYMENT METHOD
-              </span>
-
-              <div className="flex border-2 border-foreground p-0.5">
-                <button
-                  type="button"
-                  className="flex-1 bg-foreground text-background py-4 text-center font-medium tracking-tight uppercase transition-colors"
-                >
-                  CREDIT CARD
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 hover:bg-muted py-4 text-center font-medium tracking-tight uppercase transition-colors"
-                >
-                  PIX
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-8 pt-2">
-              <CreditCardForm />
-            </div>
-          </div>
+          <PaymentMethod />
 
           <div className="pt-12 border-t-2 border-foreground space-y-4">
             <span className="text-[12px] font-semibold tracking-widest text-muted-foreground uppercase">
