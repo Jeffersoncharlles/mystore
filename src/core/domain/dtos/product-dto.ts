@@ -4,7 +4,7 @@ export const CreateProductDTO = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(5, 'Description is required'),
   imageUrl: z.string().url('Image URL must be a valid URL').nullable(),
-  priceInCents: z.number().int().positive('Price must be a positive integer'),
+  price: z.number().int().positive('Price must be a positive integer'),
   stock: z.number().int().min(0, 'Stock must be a non-negative integer'),
 })
 

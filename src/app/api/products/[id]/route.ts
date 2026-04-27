@@ -3,10 +3,10 @@ import { makeProductService } from '@/core/infra/factories/product-factory'
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const productService = makeProductService()
     const product = await productService.getProductById(id)
 

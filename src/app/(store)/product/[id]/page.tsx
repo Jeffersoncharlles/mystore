@@ -55,7 +55,7 @@ const ProductDetailPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Section - Left Side: Product Gallery */}
           <div className="lg:col-span-7 flex flex-col gap-6">
-            <div className="aspect-[3/4] relative bg-muted overflow-hidden">
+            <div className="aspect-3/4 relative bg-muted overflow-hidden">
               <Image
                 src={product.imageUrl || '/default-shirt.svg'}
                 alt={product.name}
@@ -87,7 +87,7 @@ const ProductDetailPage = () => {
           {/* Section - Right Side: Product Details */}
           <div className="lg:col-span-5 flex flex-col gap-8 lg:pt-10">
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+              <span className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
                 NEW COLLECTION / {product.name.split(' ')[0]}
               </span>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground uppercase font-heading">
@@ -106,7 +106,7 @@ const ProductDetailPage = () => {
 
             {/* Color Selector */}
             <div className="flex flex-col gap-4">
-              <span className="text-xs font-semibold tracking-[0.1em] text-foreground uppercase">
+              <span className="text-xs font-semibold tracking-widest text-foreground uppercase">
                 SELECIONE A COR
               </span>
               <div className="flex gap-4">
@@ -133,7 +133,7 @@ const ProductDetailPage = () => {
             {/* Size Selector */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold tracking-[0.1em] text-foreground uppercase">
+                <span className="text-xs font-semibold tracking-widest text-foreground uppercase">
                   TAMANHO
                 </span>
                 <Button className="text-[10px] underline uppercase tracking-wider hover:text-muted-foreground transition-colors">
@@ -176,13 +176,13 @@ const ProductDetailPage = () => {
             {/* Accordions (Simulated with plain structure as per Figma) */}
             <div className="flex flex-col mt-4">
               <div className="py-4 border-b border-border flex items-center justify-between group cursor-pointer">
-                <span className="text-xs font-semibold tracking-[0.1em] text-foreground uppercase">
+                <span className="text-xs font-semibold tracking-widest text-foreground uppercase">
                   DETALHES DO PRODUTO
                 </span>
                 <ChevronDown className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />
               </div>
               <div className="py-4 border-b border-border flex items-center justify-between group cursor-pointer">
-                <span className="text-xs font-semibold tracking-[0.1em] text-foreground uppercase">
+                <span className="text-xs font-semibold tracking-widest text-foreground uppercase">
                   CUIDADOS
                 </span>
                 <ChevronDown className="size-4 text-muted-foreground group-hover:text-foreground transition-colors" />

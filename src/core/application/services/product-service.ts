@@ -10,7 +10,7 @@ export class ProductService {
       name: data.name,
       description: data.description,
       imageUrl: data.imageUrl,
-      priceInCents: Math.round(data.priceInCents * 100),
+      priceInCents: Math.round(data.price * 100),
       stock: data.stock,
       isActive: true,
     }
@@ -22,13 +22,12 @@ export class ProductService {
   async getAllProducts({
     perPage,
     page,
-    limit,
   }: {
     perPage?: number
     page?: number
     limit?: number
   }) {
-    return await this.productRepository.findAll(perPage, page, limit)
+    return await this.productRepository.findAll(perPage, page)
   }
 
   async getProductById(id: string) {

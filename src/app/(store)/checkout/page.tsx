@@ -17,7 +17,7 @@ export default function CheckoutPage() {
                 01 / PAYMENT METHOD
               </span>
 
-              <div className="flex border-2 border-foreground p-[2px]">
+              <div className="flex border-2 border-foreground p-0.5">
                 <button
                   type="button"
                   className="flex-1 bg-foreground text-background py-4 text-center font-medium tracking-tight uppercase transition-colors"
