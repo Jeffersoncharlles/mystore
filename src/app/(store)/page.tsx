@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+import { ProductCardSkeleton } from '@/components/skeletons/product-card-skeleton'
 import { ProductList } from './_components/product-list'
 
 export default async function Home() {
@@ -22,7 +24,17 @@ export default async function Home() {
         </div>
       </section>
 
-      <ProductList />
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <ProductCardSkeleton key={i.toString()} />
+            ))}
+          </div>
+        }
+      >
+        <ProductList />
+      </Suspense>
     </div>
   )
 }

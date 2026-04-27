@@ -32,13 +32,9 @@ export async function POST(request: NextRequest) {
 
     const userId = mockUserId
 
-    const cartService = makeCartService().addItemToCart(
-      productId,
-      quantity,
-      userId,
-    )
+    await makeCartService().addItemToCart(productId, quantity, userId)
 
-    return NextResponse.json(cartService)
+    return NextResponse.json({ success: true })
   } catch (_error) {
     return new Response(
       JSON.stringify({ error: 'Failed to add item to cart' }),

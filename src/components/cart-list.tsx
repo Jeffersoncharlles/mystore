@@ -9,7 +9,7 @@ import { Button } from './ui/button'
 export const CardList = () => {
   const router = useRouter()
   const pathname = usePathname()
-  const { cart, isLoading, updateItem } = useCart()
+  const { cart, updateItem } = useCart()
 
   if (cart?.cartItems.items.length === 0) {
     return (
@@ -34,7 +34,7 @@ export const CardList = () => {
           <div key={item.productId} className="flex flex-col">
             <div className="flex gap-4">
               <div className="relative w-26 h-36 bg-muted shrink-0 overflow-hidden">
-                {/** biome-ignore lint/performance/noImgElement: <explanation> */}
+                {/** biome-ignore lint/performance/noImgElement: no requirement Image/Next */}
                 <img
                   src={item.products.imageUrl || '/default-shirt.svg'}
                   alt={item.products.name}
@@ -101,8 +101,9 @@ export const CardList = () => {
 
       {checkoutPathname ? (
         <Button
-          onClick={() => {}}
-          className="w-full h-16 text-lg tracking-[0.1em] uppercase group flex items-center justify-center gap-4 cursor-pointer"
+          type="submit"
+          form="checkout-form"
+          className="w-full h-16 text-lg tracking-widest uppercase group flex items-center justify-center gap-4 cursor-pointer"
         >
           FINALIZAR COMPRA
           <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -110,7 +111,7 @@ export const CardList = () => {
       ) : (
         <Button
           onClick={handleFinishPayment}
-          className="w-full h-16 text-lg tracking-[0.1em] uppercase group flex items-center justify-center gap-4 cursor-pointer"
+          className="w-full h-16 text-lg tracking-widest uppercase group flex items-center justify-center gap-4 cursor-pointer"
         >
           FINALIZAR COMPRA
           <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
