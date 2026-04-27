@@ -2,7 +2,7 @@ import { eq, sql } from 'drizzle-orm'
 import type { CreateCartItemDTO } from '@/core/domain/dtos/cart-dto'
 import type { ICartRepository } from '@/core/domain/repositories/cart-repository.interface'
 import type { DrizzleDB } from '..'
-import { cartItems } from '../schema'
+import { cartItems, products } from '../schema'
 
 export class DrizzleCartRepository implements ICartRepository {
   constructor(private readonly db: DrizzleDB) {}
@@ -28,8 +28,16 @@ export class DrizzleCartRepository implements ICartRepository {
 
   async findByUserId(userId: string) {
     const items = await this.db
-      .select()
+      .select({
+        productId: cartItems.productId,
+        quantity: cartItems.quantity,
+        priceAtAdditionInCents: cartItems.priceAtAdditionInCents,
+        productName: products.name,
+        productImageUrl: products.imageUrl,
+        productsDescription: products.description,
+      })
       .from(cartItems)
+      .innerJoin(products, eq(cartItems.productId, products.id))
       .where(eq(cartItems.userId, userId))
 
     if (items.length === 0) {
@@ -46,6 +54,11 @@ export class DrizzleCartRepository implements ICartRepository {
         productId: item.productId,
         quantity: item.quantity,
         priceAtAdditionInCents: item.priceAtAdditionInCents,
+        products: {
+          name: item.productName,
+          imageUrl: item.productImageUrl,
+          description: item.productsDescription,
+        },
       })),
       totalInCents,
     }
@@ -63,13 +76,17 @@ export class DrizzleCartRepository implements ICartRepository {
     await this.db
       .update(cartItems)
       .set({ quantity, updatedAt: new Date() })
-      .where(sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`)
+      .where(
+        sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`,
+      )
   }
 
   async delete(userId: string, productId: string): Promise<void> {
     await this.db
       .delete(cartItems)
-      .where(sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`)
+      .where(
+        sql`${cartItems.userId} = ${userId} AND ${cartItems.productId} = ${productId}`,
+      )
   }
 
   async get(userId: string) {

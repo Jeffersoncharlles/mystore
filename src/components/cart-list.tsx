@@ -3,7 +3,6 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useCart } from '@/hooks/use-cart'
-import { SUMMARY_ITEMS } from '@/shared/utils/product-image'
 import { Button } from './ui/button'
 
 export const CardList = () => {
@@ -12,24 +11,30 @@ export const CardList = () => {
   return (
     <>
       <div className="space-y-6">
-        {SUMMARY_ITEMS.map((item) => (
-          <div key={item.title} className="flex gap-4">
+        {cart?.cartItems.items.map((item) => (
+          <div key={item.productId} className="flex gap-4">
             <div className="relative w-24 h-32 bg-muted shrink-0 overflow-hidden">
               {/** biome-ignore lint/performance/noImgElement: <explanation> */}
               <img
-                src={item.image}
-                alt={item.title}
+                src={item.products.imageUrl || '/default-shirt.svg'}
+                alt={item.products.name}
                 className="object-cover grayscale"
               />
             </div>
             <div className="flex flex-col justify-between py-1">
               <div className="space-y-1">
                 <h4 className="text-[12px] font-semibold tracking-widest uppercase leading-tight">
-                  {item.title}
+                  {item.products.name}
                 </h4>
-                <p className="text-sm text-muted-foreground">{item.details}</p>
+                <p className="text-sm text-muted-foreground">
+                  {item.products.description.length > 100
+                    ? `${item.products.description.slice(0, 100)}...`
+                    : item.products.description}
+                </p>
               </div>
-              <span className="font-bold">{item.price}</span>
+              <span className="font-bold">
+                ${(item.priceAtAdditionInCents / 100).toFixed(2)}
+              </span>
             </div>
           </div>
         ))}
