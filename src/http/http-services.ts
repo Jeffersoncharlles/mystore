@@ -1,4 +1,5 @@
 import type { ProductResponseDTO } from '@/core/domain/dtos/product-dto'
+import type { Product } from '@/core/domain/entities/product'
 
 export const getAllProducts = async ({
   page,
@@ -19,5 +20,18 @@ export const getAllProducts = async ({
     method: 'GET',
   })
   const data: ProductResponseDTO = await response.json()
+  return data
+}
+
+export const getProductById = async (id: string): Promise<Product> => {
+  const response = await fetch(`/api/products/${id}`, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch product')
+  }
+
+  const data: Product = await response.json()
   return data
 }

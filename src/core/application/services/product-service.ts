@@ -19,7 +19,19 @@ export class ProductService {
     return savedProduct
   }
 
-  async getAllProducts({ perPage, page }: { perPage?: number; page?: number }) {
-    return await this.productRepository.findAll(perPage, page)
+  async getAllProducts({
+    perPage,
+    page,
+    limit,
+  }: {
+    perPage?: number
+    page?: number
+    limit?: number
+  }) {
+    return await this.productRepository.findAll(perPage, page, limit)
+  }
+
+  async getProductById(id: string) {
+    return await this.productRepository.findById(id)
   }
 }

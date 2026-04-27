@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import type { ProductResponseDTO } from '@/core/domain/dtos/product-dto'
 
 type ProductCardProps = {
@@ -11,13 +12,16 @@ export function ProductCard({ props }: ProductCardProps) {
   const imageUrl = props.imageUrl || '/default-shirt.svg'
 
   return (
-    <div className="flex flex-col gap-2 group cursor-pointer">
+    <Link
+      href={`/product/${props.id}`}
+      className="flex flex-col gap-2 group cursor-pointer"
+    >
       <div className="aspect-3/4 overflow-hidden bg-muted relative">
         <Image
           src={imageUrl}
           alt={props.name}
           fill
-          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+          className="object-cover  transition-all duration-500"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
       </div>
@@ -37,6 +41,6 @@ export function ProductCard({ props }: ProductCardProps) {
       <p className="text-sm text-muted-foreground leading-relaxed">
         {props.description}
       </p>
-    </div>
+    </Link>
   )
 }
