@@ -1,10 +1,16 @@
 import { Skeleton } from '../ui/skeleton'
 
-export const ProductCardSkeleton = () => {
+type ProductCardSkeletonProps = {
+  count?: number
+}
+
+export const ProductCardSkeleton = ({
+  count = 8,
+}: ProductCardSkeletonProps) => {
   return (
     <>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-24">
-        {Array.from({ length: 8 }).map((_, index) => (
+        {Array.from({ length: count }).map((_, index) => (
           <div
             key={index.toString()}
             className="flex flex-col gap-2 group cursor-pointer"

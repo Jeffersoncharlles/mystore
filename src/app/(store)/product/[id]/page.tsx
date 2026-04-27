@@ -6,8 +6,9 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { ProductCard } from '@/components/product-card'
+import { ProductCardSkeleton } from '@/components/skeletons/product-card-skeleton'
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
+import { useCart } from '@/hooks/use-cart'
 import { getAllProducts, getProductById } from '@/http/http-services'
 
 const ProductDetailPage = () => {
@@ -21,48 +22,15 @@ const ProductDetailPage = () => {
     enabled: !!id,
   })
 
+  const { addItem } = useCart()
+
   const { data: relatedProducts, isLoading: isLoadingRelated } = useQuery({
     queryKey: ['related-products'],
     queryFn: async () => getAllProducts({ limit: 4 }),
   })
 
   if (isLoadingProduct) {
-    return (
-      <div className="container mx-auto px-4 py-12 animate-pulse">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-7 space-y-4">
-            <Skeleton className="aspect-3/4 w-full" />
-            <div className="grid grid-cols-2 gap-4">
-              <Skeleton className="aspect-square w-full" />
-              <Skeleton className="aspect-square w-full" />
-            </div>
-          </div>
-          <div className="md:col-span-5 space-y-6">
-            <Skeleton className="h-4 w-1/4" />
-            <Skeleton className="h-12 w-3/4" />
-            <Skeleton className="h-8 w-1/4" />
-            <Skeleton className="h-32 w-full" />
-            <div className="space-y-4">
-              <Skeleton className="h-4 w-1/4" />
-              <div className="flex gap-2">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-8 w-8 rounded-full" />
-                ))}
-              </div>
-            </div>
-            <div className="space-y-4">
-              <Skeleton className="h-4 w-1/4" />
-              <div className="grid grid-cols-4 gap-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-10 w-full" />
-                ))}
-              </div>
-            </div>
-            <Skeleton className="h-14 w-full" />
-          </div>
-        </div>
-      </div>
-    )
+    return <ProductCardSkeleton />
   }
 
   if (!product) {
@@ -191,7 +159,10 @@ const ProductDetailPage = () => {
 
             {/* Action Button */}
             <div className="flex flex-col gap-4 pt-4">
-              <Button className="w-full h-16 rounded-none text-base tracking-[0.2em] uppercase font-normal">
+              <Button
+                className="w-full h-16 rounded-none text-base tracking-[0.2em] uppercase font-normal"
+                onClick={() => addItem({ productId: product.id, quantity: 1 })}
+              >
                 ADICIONAR AO CARRINHO
               </Button>
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
@@ -221,28 +192,20 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* Related Products Section */}
       <div className="container mx-auto px-4 lg:px-24 flex flex-col gap-8">
         <div className="flex items-end justify-between border-b-2 border-foreground pb-4">
           <h2 className="text-3xl font-bold tracking-tight text-foreground uppercase font-heading">
             VOCÊ TAMBÉM PODE GOSTAR
           </h2>
-          <Button className="text-xs font-semibold tracking-[0.1em] underline uppercase hover:text-muted-foreground transition-colors">
-            Ver todos
-          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
-          {isLoadingRelated
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <div key={i.toString()} className="flex flex-col gap-4">
-                  <Skeleton className="aspect-3/4 w-full" />
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-4 w-1/4" />
-                </div>
-              ))
-            : relatedProducts?.data.map((product) => (
-                <ProductCard key={product.id} props={product} />
-              ))}
+          {isLoadingRelated ? (
+            <ProductCardSkeleton count={4} />
+          ) : (
+            relatedProducts?.data.map((product) => (
+              <ProductCard key={product.id} props={product} />
+            ))
+          )}
         </div>
       </div>
     </div>

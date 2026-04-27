@@ -11,3 +11,23 @@ export const CreateCartItemDTO = z.object({
 })
 
 export type CreateCartItemDTO = z.infer<typeof CreateCartItemDTO>
+
+export const responseCartItemDTO = z.object({
+  cartItems: z.object({
+    items: z.array(
+      z.object({
+        productId: z.string(),
+        quantity: z.number(),
+        priceAtAdditionInCents: z.number(),
+        products: z.object({
+          name: z.string(),
+          imageUrl: z.string(),
+          description: z.string(),
+        }),
+      }),
+    ),
+    totalInCents: z.number(),
+  }),
+})
+
+export type ResponseCartItemDTO = z.infer<typeof responseCartItemDTO>

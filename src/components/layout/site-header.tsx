@@ -1,5 +1,6 @@
-import { ShoppingBag, User } from 'lucide-react'
+import { User } from 'lucide-react'
 import Link from 'next/link'
+import { StoreBadge } from './store-badge'
 import { ThemeToggle } from './theme-toogle'
 
 export function SiteHeader() {
@@ -37,7 +38,7 @@ export function SiteHeader() {
             href="/cart"
             className="text-foreground hover:opacity-70 transition-opacity"
           >
-            <ShoppingBag className="h-5 w-5" />
+            <StoreBadge />
           </Link>
         </div>
       </div>

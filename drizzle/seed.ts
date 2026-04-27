@@ -143,23 +143,26 @@ async function seed() {
     const clothingImages = await fetchUnsplashClothingImages()
     console.log(`✅ ${clothingImages.length} imagens carregadas`)
 
-    // 1. Criar usuário com email específico
+    // 1. Criar usuário com email e ID padrão para mock
+    const testUserId = '550e8400-e29b-41d4-a716-446655440000'
     const salt = randomBytes(16)
     const passwordHash = pbkdf2Sync('12345', salt, 100000, 64, 'sha512')
     const passwordHashString = `${salt.toString('hex')}:${passwordHash.toString('hex')}`
 
-    const createdUsers = await db
+    await db
       .insert(users)
       .values({
+        id: testUserId,
         name: 'Test User',
         email: 'email@email.com',
         passwordHash: passwordHashString,
       })
       .returning()
 
-    const testUserId = createdUsers[0].id
-
-    console.log(`✅ Usuário criado: ${testUserId}`)
+    console.log(`✅ Usuário criado`)
+    console.log(`   ID: ${testUserId}`)
+    console.log(`   Email: email@email.com`)
+    console.log(`   Senha: 12345`)
 
     // 2. Gerar 100 camisas com Faker e imagens do Unsplash
     const productsData = Array.from({ length: 100 }, (_, index) => {
@@ -298,8 +301,6 @@ async function seed() {
 
     console.log('\n🎉 Seed concluído com sucesso!\n')
     console.log('📊 Resumo:')
-    console.log('   Email: email@email.com')
-    console.log('   Senha: 12345')
     console.log(`   Total de Produtos: ${createdProducts.length} camisas`)
     console.log(`   - ${productsWithStock} com estoque`)
     console.log(`   - ${productsOutOfStock} sem estoque`)
@@ -312,7 +313,8 @@ async function seed() {
     console.log(
       `\n💡 Todas as camisas têm imagens do Unsplash (fotos reais de roupas)`,
     )
-    console.log(`   Fallback: https://picsum.photos (se Unsplash falhar)\n`)
+    console.log(`   Fallback: https://picsum.photos (se Unsplash falhar)`)
+    console.log(`\n🔐 Mock User ID: ${testUserId}\n`)
 
     process.exit(0)
   } catch (error) {
